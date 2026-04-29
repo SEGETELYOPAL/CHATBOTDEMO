@@ -119,12 +119,12 @@ export default function Landing({ products }) {
                     )}
                 </header>
 
-                <section data-animate-section className="mx-auto max-w-6xl px-6 py-10 lg:py-16">
-                    <div className="grid items-center gap-10 lg:grid-cols-2">
+                <section data-animate-section className="mx-auto max-w-6xl px-6 py-8 lg:py-16">
+                    <div className="grid items-center gap-8 lg:gap-10 lg:grid-cols-2">
                         <div>
-                            <h1 className="text-5xl font-extrabold leading-tight lg:text-6xl">Chatbot comercial tipo WhatsApp</h1>
-                            <p className="mt-4 text-xl text-gray-600 lg:text-2xl">Simula una conversacion automatica con tus clientes, muestra productos y responde mensajes basicos desde una interfaz moderna.</p>
-                            <div className="mt-8 flex flex-wrap gap-3">
+                            <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">Chatbot comercial tipo WhatsApp</h1>
+                            <p className="mt-4 text-lg text-gray-600 sm:text-xl lg:text-2xl">Simula una conversacion automatica con tus clientes, muestra productos y responde mensajes basicos desde una interfaz moderna.</p>
+                            <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
                                 <Link href={route('chatbot.demo.chat')} className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700">
                                     Probar chatbot
                                 </Link>
@@ -133,7 +133,7 @@ export default function Landing({ products }) {
                                 </a>
                             </div>
                         </div>
-                        <WhatsAppChat initialProducts={products} />
+                        <WhatsAppChat initialProducts={products} fullscreenOnMobile={false} />
                     </div>
                 </section>
 
@@ -213,7 +213,22 @@ export default function Landing({ products }) {
                             </div>
                         </div>
 
-                        <div className="mt-6 overflow-x-auto">
+                        <div className="mt-6 grid gap-3 md:hidden">
+                            {scenarios.map((scenario) => (
+                                <article key={`${scenario.name}-mobile`} className="rounded-lg border border-amber-200 bg-white p-4">
+                                    <p className="text-base font-semibold text-gray-900">{scenario.name}</p>
+                                    <p className="mt-2 text-sm text-gray-700">
+                                        <span className="font-semibold">Volumen:</span>{' '}
+                                        MKT {scenario.marketing} | UTL {scenario.utility} | AUTH {scenario.auth}
+                                    </p>
+                                    <p className="mt-2 text-base font-bold text-emerald-700">
+                                        {formatCop(calcTotal(scenario) * usdToCop)}
+                                    </p>
+                                </article>
+                            ))}
+                        </div>
+
+                        <div className="mt-6 hidden overflow-x-auto md:block">
                             <table className="min-w-full rounded-lg bg-white text-sm">
                                 <thead>
                                     <tr className="bg-slate-100 text-left">
@@ -238,7 +253,31 @@ export default function Landing({ products }) {
                             </table>
                         </div>
 
-                        <div className="mt-8 overflow-x-auto">
+                        <div className="mt-8 grid gap-3 md:hidden">
+                            <h3 className="text-2xl font-bold text-gray-900">Estimado global tercerizado (API + servicio)</h3>
+                            {scenarios.map((scenario) => {
+                                const apiCost = Math.round(calcTotal(scenario) * usdToCop);
+                                const membership = serviceTiers[scenario.name] ?? 0;
+                                const totalClient = apiCost + membership;
+
+                                return (
+                                    <article key={`${scenario.name}-outsourcing-mobile`} className="rounded-lg border border-amber-200 bg-white p-4">
+                                        <p className="text-base font-semibold text-gray-900">{scenario.name}</p>
+                                        <p className="mt-2 text-sm text-gray-700">
+                                            <span className="font-semibold">API WhatsApp:</span> {formatCop(apiCost)}
+                                        </p>
+                                        <p className="mt-1 text-sm text-gray-700">
+                                            <span className="font-semibold">Membresia:</span> {formatCop(membership)}
+                                        </p>
+                                        <p className="mt-2 text-base font-bold text-emerald-700">
+                                            Total: {formatCop(totalClient)}
+                                        </p>
+                                    </article>
+                                );
+                            })}
+                        </div>
+
+                        <div className="mt-8 hidden overflow-x-auto md:block">
                             <h3 className="mb-3 text-2xl font-bold text-gray-900">Estimado global tercerizado (API + servicio)</h3>
                             <table className="min-w-full rounded-lg bg-white text-base">
                                 <thead>

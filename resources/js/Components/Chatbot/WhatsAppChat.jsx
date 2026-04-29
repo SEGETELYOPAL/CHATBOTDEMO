@@ -2,12 +2,13 @@ import axios from 'axios';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ChatMessage from './ChatMessage';
 
-export default function WhatsAppChat({ initialProducts = [] }) {
+export default function WhatsAppChat({ initialProducts = [], fullscreenOnMobile = true }) {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     const [products, setProducts] = useState(initialProducts);
     const endRef = useRef(null);
+    const messagesContainerRef = useRef(null);
 
     const welcomeMessage = useMemo(
         () => ({
@@ -26,7 +27,12 @@ export default function WhatsAppChat({ initialProducts = [] }) {
     }, [welcomeMessage]);
 
     useEffect(() => {
-        endRef.current?.scrollIntoView({ behavior: 'smooth' });
+        const container = messagesContainerRef.current;
+        if (!container) return;
+        container.scrollTo({
+            top: container.scrollHeight,
+            behavior: 'smooth',
+        });
     }, [messages, isTyping]);
 
     const appendMessage = (message) => setMessages((prev) => [...prev, message]);
@@ -103,7 +109,13 @@ export default function WhatsAppChat({ initialProducts = [] }) {
     };
 
     return (
-        <div className="mx-auto flex w-full max-w-md flex-col overflow-hidden rounded-3xl border border-gray-200 bg-[#efeae2] shadow-2xl">
+        <div
+            className={`flex flex-col overflow-hidden border border-gray-200 bg-[#efeae2] shadow-2xl ${
+                fullscreenOnMobile
+                    ? 'h-[100dvh] w-screen md:h-auto md:w-full md:max-w-md md:rounded-3xl'
+                    : 'mx-auto w-full max-w-md rounded-3xl'
+            }`}
+        >
             <div className="flex items-center gap-3 bg-[#075e54] px-4 py-3 text-white">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-200 font-bold text-emerald-900">
                     AV
@@ -114,7 +126,7 @@ export default function WhatsAppChat({ initialProducts = [] }) {
                 </div>
             </div>
 
-            <div className="h-[28rem] space-y-3 overflow-y-auto bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.35),_transparent_45%)] p-4">
+            <div ref={messagesContainerRef} className="flex-1 space-y-3 overflow-y-auto bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.35),_transparent_45%)] p-4 md:h-[28rem] md:flex-none">
                 {messages.map((message) => (
                     <ChatMessage key={message.id} message={message} onInterest={handleInterest} />
                 ))}
@@ -131,8 +143,9 @@ export default function WhatsAppChat({ initialProducts = [] }) {
                     type="text"
                     value={inputValue}
                     onChange={(event) => setInputValue(event.target.value)}
+                    autoFocus={false}
                     placeholder="Escribe un mensaje..."
-                    className="w-full rounded-full border border-gray-300 px-4 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+                    className="w-full rounded-full border border-gray-300 px-4 py-2 text-base focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200 md:text-sm"
                 />
                 <button
                     type="submit"
