@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="../assets/gsap.min.js"></script>
+    <style>
+      :root {
+        --emerald-900: #064e3b;
+        --emerald-700: #047857;
+        --emerald-500: #10b981;
+        --emerald-300: #6ee7b7;
+        --slate-950: #0b1220;
+        --slate-800: #1f2937;
+        --slate-600: #475569;
+        --slate-200: #e2e8f0;
+        --white: #ffffff;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; width: 1080px; height: 1920px; overflow: hidden;
+        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+        color: var(--slate-950);
+      }
+      #video {
+        width: 1080px; height: 1920px; position: relative; overflow: hidden;
+        background:
+          radial-gradient(circle at 15% 20%, rgba(16,185,129,0.24), transparent 38%),
+          radial-gradient(circle at 85% 10%, rgba(4,120,87,0.15), transparent 35%),
+          linear-gradient(170deg, #f4fff9 0%, #ffffff 42%, #edf4f2 100%);
+      }
+      .scene {
+        position: absolute; inset: 0; padding: 110px 86px;
+        opacity: 0; transform: translateY(40px) scale(0.985);
+      }
+      .center { display: flex; align-items: center; justify-content: center; text-align: center; }
+      .headline { font-size: 98px; line-height: 1.04; font-weight: 800; letter-spacing: -1.2px; max-width: 960px; }
+      .subheadline { margin-top: 26px; font-size: 48px; color: var(--slate-600); font-weight: 600; }
+      .accent { color: var(--emerald-700); }
+      .tech-row {
+        margin-top: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .tech-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #dbe4ee;
+        border-radius: 999px;
+        padding: 14px 24px;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        font-size: 34px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .tech-icon {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+      }
+      .laravel-icon { color: #f43f5e; }
+      .inertia-icon { color: #64748b; }
+      .react-icon { color: #0ea5e9; }
+
+      .phone {
+        width: 710px; height: 1330px; background: #f6f7f8; border-radius: 64px;
+        border: 14px solid #111827; box-shadow: 0 26px 90px rgba(2, 6, 23, 0.22);
+        position: relative; overflow: hidden; margin: 0 auto;
+      }
+      .notch { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 230px; height: 38px; background: #111827; border-radius: 999px; }
+      .wa-header {
+        height: 130px; background: linear-gradient(180deg, var(--emerald-700), #0b8f64);
+        color: #fff; display: flex; align-items: center; gap: 16px; padding: 0 32px; margin-top: 40px;
+      }
+      .avatar { width: 58px; height: 58px; border-radius: 999px; background: rgba(255,255,255,.22); }
+      .wa-title { font-size: 30px; font-weight: 700; }
+      .chat-body {
+        padding: 30px 24px; display: flex; flex-direction: column; gap: 14px;
+        background:
+          linear-gradient(180deg, rgba(217,250,239,.62), rgba(255,255,255,.78)),
+          repeating-linear-gradient(45deg, rgba(15,23,42,0.025), rgba(15,23,42,0.025) 7px, transparent 7px, transparent 14px);
+        height: calc(100% - 170px);
+      }
+      .bubble {
+        max-width: 90%; padding: 20px 24px; border-radius: 22px; font-size: 33px;
+        line-height: 1.28; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.09); opacity: 0;
+      }
+      .client { background: #fff; color: #111827; border-top-left-radius: 10px; align-self: flex-start; }
+      .bot { background: #dcfce7; color: #052e24; border-top-right-radius: 10px; align-self: flex-end; }
+      .typing {
+        align-self: flex-end; background: #dcfce7; border-radius: 999px; padding: 14px 20px;
+        display: inline-flex; gap: 8px; opacity: 0;
+      }
+      .dot { width: 11px; height: 11px; background: #047857; border-radius: 999px; }
+      .bubble.product-bubble {
+        max-width: 96%;
+        padding: 0;
+        border-radius: 18px;
+        background: transparent;
+        box-shadow: none;
+      }
+      .product-card {
+        background: #f3f4f6;
+        border: 1px solid #dbe3ea;
+        border-radius: 18px;
+        padding: 14px;
+        box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+      }
+      .product-thumb {
+        width: 100%;
+        height: 120px;
+        border-radius: 12px;
+        background: #d1d5db;
+        border: 1px solid #cdd5df;
+        color: #64748b;
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .product-meta { margin-top: 12px; display: flex; flex-direction: column; gap: 4px; }
+      .product-name { font-size: 25px; font-weight: 700; color: #0f172a; }
+      .product-desc { font-size: 21px; color: #334155; line-height: 1.25; }
+      .product-price { margin-top: 3px; font-size: 31px; font-weight: 800; color: #047857; }
+      .product-stock { margin-top: 2px; font-size: 22px; color: #475569; }
+      .product-btn {
+        margin-top: 10px;
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        background: #059669;
+        color: #fff;
+        font-size: 23px;
+        font-weight: 700;
+        padding: 10px 0;
+      }
+
+      .benefit-grid {
+        margin-top: 145px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+      }
+      .card {
+        border-radius: 30px; background: rgba(255,255,255,.93); border: 1px solid #d1fae5;
+        padding: 34px; box-shadow: 0 16px 38px rgba(2, 6, 23, 0.08); opacity: 0;
+      }
+      .card .icon { font-size: 60px; }
+      .card .text { margin-top: 14px; font-size: 45px; line-height: 1.12; font-weight: 700; color: #0f172a; }
+
+      .flow-wrap { margin-top: 170px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: center; }
+      .flow-node {
+        background: #fff; border: 1px solid #bbf7d0; border-radius: 18px; padding: 20px 24px;
+        font-size: 33px; font-weight: 700; box-shadow: 0 8px 22px rgba(15,23,42,0.08); opacity: 0;
+        display: inline-flex; align-items: center; gap: 10px;
+      }
+      .arrow { font-size: 48px; color: #047857; opacity: 0; }
+      .flow-icon { font-size: 28px; color: #047857; }
+      #scene-5 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+      #scene-5 .headline {
+        font-size: 104px;
+        max-width: 980px;
+      }
+      #scene-5 .flow-wrap {
+        margin-top: 92px;
+        max-width: 940px;
+        gap: 20px;
+      }
+      #scene-5 .flow-node {
+        font-size: 40px;
+        padding: 24px 28px;
+        border-radius: 20px;
+      }
+      #scene-5 .arrow {
+        font-size: 58px;
+      }
+
+      .cta-box {
+        margin-top: 90px; width: 100%; border-radius: 34px; background: rgba(255,255,255,.93); border: 1px solid #a7f3d0;
+        padding: 56px 48px; box-shadow: 0 24px 48px rgba(2, 6, 23, 0.12); text-align: center;
+      }
+      .cta-btn {
+        margin-top: 34px; display: inline-block; background: linear-gradient(135deg, var(--emerald-700), var(--emerald-500));
+        color: #fff; font-size: 46px; font-weight: 800; padding: 24px 46px; border-radius: 20px; box-shadow: 0 16px 30px rgba(16,185,129,.38); opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="video" data-composition-id="chatbot-whatsapp-demo" data-start="0" data-duration="39" data-width="1080" data-height="1920">
+      <section id="scene-1" class="scene center">
+        <div>
+          <h1 class="headline">¿Y si tu negocio respondiera solo en <span class="accent">WhatsApp</span>?</h1>
+        </div>
+      </section>
+
+      <section id="scene-2" class="scene center">
+        <div>
+          <h2 class="headline">Chatbot comercial tipo WhatsApp</h2>
+          <div class="tech-row">
+            <div class="tech-badge" id="tech-laravel"><i class="fa-brands fa-laravel tech-icon laravel-icon"></i>Laravel</div>
+            <div class="tech-badge" id="tech-inertia"><i class="fa-solid fa-bolt tech-icon inertia-icon"></i>Inertia</div>
+            <div class="tech-badge" id="tech-react"><i class="fa-brands fa-react tech-icon react-icon"></i>React</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-3" class="scene">
+        <div class="phone" id="phone">
+          <div class="notch"></div>
+          <div class="wa-header">
+            <div class="avatar"></div>
+            <div class="wa-title">Demo Chatbot</div>
+          </div>
+          <div class="chat-body">
+            <div id="msg-1" class="bubble client">Hola, quiero ver productos</div>
+            <div id="typing" class="typing">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div id="msg-2" class="bubble bot">¡Hola! Estos son algunos productos disponibles</div>
+            <div id="msg-3" class="bubble bot product-bubble">
+              <div class="product-card">
+                <div class="product-thumb">Sin imagen</div>
+                <div class="product-meta">
+                  <span class="product-name">Camiseta Premium</span>
+                  <span class="product-desc">Camiseta ajustable para eventos y uso diario</span>
+                  <span class="product-price">$161.900</span>
+                  <span class="product-stock">Stock: 15</span>
+                </div>
+                <button class="product-btn" type="button">Me interesa</button>
+              </div>
+            </div>
+            <div id="msg-4" class="bubble bot product-bubble">
+              <div class="product-card">
+                <div class="product-thumb">Sin imagen</div>
+                <div class="product-meta">
+                  <span class="product-name">Pantalón</span>
+                  <span class="product-desc">Pantalón cómodo para atención comercial diaria</span>
+                  <span class="product-price">$200.900</span>
+                  <span class="product-stock">Stock: 9</span>
+                </div>
+                <button class="product-btn" type="button">Me interesa</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-4" class="scene">
+        <h2 class="headline">Beneficios clave</h2>
+        <div class="benefit-grid">
+          <article class="card" id="b1"><div class="icon">🤖</div><div class="text">Atención automática</div></article>
+          <article class="card" id="b2"><div class="icon">🗂️</div><div class="text">Catálogo conectado a base de datos</div></article>
+          <article class="card" id="b3"><div class="icon">💬</div><div class="text">Flujo tipo WhatsApp</div></article>
+          <article class="card" id="b4"><div class="icon">📈</div><div class="text">Ideal para tiendas, servicios y campañas</div></article>
+        </div>
+      </section>
+
+      <section id="scene-5" class="scene">
+        <h2 class="headline">Arquitectura<br />de integración</h2>
+        <div class="flow-wrap">
+          <div class="flow-node" id="f1"><i class="fa-solid fa-user flow-icon"></i>Cliente</div><div class="arrow" id="a1">→</div>
+          <div class="flow-node" id="f2"><i class="fa-brands fa-whatsapp flow-icon"></i>WhatsApp</div><div class="arrow" id="a2">→</div>
+          <div class="flow-node" id="f3"><i class="fa-solid fa-plug flow-icon"></i>API WhatsApp Business</div><div class="arrow" id="a3">→</div>
+          <div class="flow-node" id="f4"><i class="fa-brands fa-laravel flow-icon"></i>Laravel</div><div class="arrow" id="a4">→</div>
+          <div class="flow-node" id="f5"><i class="fa-solid fa-database flow-icon"></i>Base de datos</div>
+        </div>
+      </section>
+
+      <section id="scene-6" class="scene center">
+        <div class="cta-box">
+          <h2 class="headline">Automatiza tus ventas</h2>
+          <p class="subheadline">Prueba el demo del chatbot</p>
+          <div id="cta-btn" class="cta-btn">Probar chatbot</div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      // Timeline principal (39s): 4 + 5 + 10 + 8 + 7 + 5
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const showScene = (id, at, dur) => {
+        tl.set(id, { autoAlpha: 0, y: 40, scale: 0.985 }, at);
+        tl.to(id, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: "power2.out" }, at + 0.12);
+        tl.to(id, { autoAlpha: 0, y: -24, scale: 1.01, duration: 0.45, ease: "power1.in" }, at + dur - 0.55);
+      };
+
+      showScene("#scene-1", 0, 4);
+      showScene("#scene-2", 4, 5);
+      showScene("#scene-3", 9, 10);
+      showScene("#scene-4", 19, 8);
+      showScene("#scene-5", 27, 7);
+      showScene("#scene-6", 34, 5);
+
+      // Escena 3: microanimaciones de chat + typing indicator
+      tl.fromTo("#phone", { y: 30, scale: 0.96, autoAlpha: 0 }, { y: 0, scale: 1, autoAlpha: 1, duration: 0.6, ease: "power2.out" }, 9.25);
+      tl.fromTo("#msg-1", { x: -28, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45 }, 9.9);
+      tl.fromTo("#typing", { autoAlpha: 0, scale: 0.95 }, { autoAlpha: 1, scale: 1, duration: 0.28 }, 11.0);
+      tl.to("#typing .dot", { y: -4, duration: 0.4, yoyo: true, repeat: 5, stagger: 0.08, ease: "sine.inOut" }, 11.2);
+      tl.to("#typing", { autoAlpha: 0, duration: 0.2 }, 13.6);
+      tl.fromTo("#msg-2", { x: 30, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.35 }, 13.8);
+      tl.fromTo("#msg-3", { x: 30, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.35 }, 15.3);
+      tl.fromTo("#msg-4", { x: 30, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.35 }, 16.7);
+
+      // Escena 4: tarjetas de beneficios
+      ["#b1", "#b2", "#b3", "#b4"].forEach((id, i) => {
+        tl.fromTo(id, { autoAlpha: 0, y: 28, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "power2.out" }, 19.85 + i * 0.32);
+      });
+
+      // Escena 5: arquitectura por etapas
+      ["#f1", "#a1", "#f2", "#a2", "#f3", "#a3", "#f4", "#a4", "#f5"].forEach((id, i) => {
+        tl.fromTo(id, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.34, ease: "power2.out" }, 27.75 + i * 0.26);
+      });
+
+      // Escena 6: CTA final
+      tl.fromTo("#cta-btn", { autoAlpha: 0, y: 20, scale: 0.95 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.6)" }, 35.2);
+      tl.to("#cta-btn", { boxShadow: "0 18px 38px rgba(16,185,129,.55)", duration: 0.5, yoyo: true, repeat: 3 }, 35.9);
+
+      window.__timelines["chatbot-whatsapp-demo"] = tl;
+    </script>
+  </body>
+</html>
+      tl.fromTo(
+        ["#tech-laravel", "#tech-inertia", "#tech-react"],
+        { autoAlpha: 0, y: 14, scale: 0.95 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.38, stagger: 0.12, ease: "power2.out" },
+        5.1
+      );
