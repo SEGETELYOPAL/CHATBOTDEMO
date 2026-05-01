@@ -12,13 +12,13 @@ class WhatsAppWebhookController extends Controller
 {
     public function verify(Request $request)
     {
-        $mode = $request->query('hub.mode');
-        $verifyToken = $request->query('hub.verify_token');
-        $challenge = $request->query('hub.challenge');
+        $mode = $request->query('hub_mode', $request->query('hub.mode'));
+        $verifyToken = $request->query('hub_verify_token', $request->query('hub.verify_token'));
+        $challenge = $request->query('hub_challenge', $request->query('hub.challenge'));
 
         \Log::info('WA verify debug', [
-            'mode' => $request->query('hub.mode'),
-            'incoming_token' => $request->query('hub.verify_token'),
+            'mode' => $mode,
+            'incoming_token' => $verifyToken,
             'env_token' => config('services.whatsapp.verify_token'),
         ]);
 
