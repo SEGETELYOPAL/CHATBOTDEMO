@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChatbotDemoController;
 use App\Http\Controllers\Admin\ChatbotAdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WhatsAppWebhookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,8 @@ Route::get('/', [ChatbotDemoController::class, 'landing'])->name('home');
 Route::get('/demo-chatbot', [ChatbotDemoController::class, 'landing'])->name('chatbot.demo');
 Route::get('/demo-chatbot/chat', [ChatbotDemoController::class, 'chat'])->name('chatbot.demo.chat');
 Route::post('/demo-chatbot/reply', [ChatbotDemoController::class, 'reply'])->name('chatbot.demo.reply');
+Route::get('/whatsapp/webhook', [WhatsAppWebhookController::class, 'verify'])->name('whatsapp.webhook.verify');
+Route::post('/whatsapp/webhook', [WhatsAppWebhookController::class, 'receive'])->name('whatsapp.webhook.receive');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [ChatbotAdminController::class, 'dashboard'])->name('dashboard');
